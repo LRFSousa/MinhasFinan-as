@@ -1,6 +1,6 @@
 package com.lrfs.minhasfinancas.model.enums;
 
-public enum Status {
+public enum StatusLancamento {
 
 	PENDENTE,
 	CANCELADO,

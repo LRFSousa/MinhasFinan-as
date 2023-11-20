@@ -3,9 +3,9 @@ package com.lrfs.minhasfinancas.model.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import org.springframework.data.convert.Jsr310Converters;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
-import com.lrfs.minhasfinancas.model.enums.Status;
+import com.lrfs.minhasfinancas.model.enums.StatusLancamento;
 import com.lrfs.minhasfinancas.model.enums.TipoLancamento;
 
 import jakarta.persistence.Column;
@@ -16,49 +16,54 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "lancamento", schema = "financas")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lancamento {
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	public Long id;
+	private Long id;
 	
-	@Column
-	public String descricao;
+	@Column(name = "descricao")
+	private String descricao;
 	
-	@Column
-	public Integer mes;
+	@Column(name = "mes")
+	private Integer mes;
 	
-	@Column
-	public Integer ano;
+	@Column(name = "ano")
+	private Integer ano;
 	
-	@ManyToOne //sempre referencia a classe atual para a outra que vc quer
-	@JoinTable(name = "id_usuario")
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	
-	@Column
+	@Column(name = "valor")
 	private BigDecimal valor;
 	
 	@Column(name = "data_cadastro")
-	@Convert(converter = Jsr310Converters.DateToLocalDateConverter.class)
+	@Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
 	private LocalDate dataCadastro;
-
-	@Column
+	
+	@Column(name = "tipo")
 	@Enumerated(value = EnumType.STRING)
 	private TipoLancamento tipo;
 	
-	@Column
+	@Column(name = "status")
 	@Enumerated(value = EnumType.STRING)
-	private Status status;
-
+	private StatusLancamento status;
+	
 }
